@@ -34,10 +34,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         System.out.println("Begin of securityFilterChain()");
         http.csrf(csrf -> csrf.disable())
+                .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))//allow frames to see h2 console
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/welcome","/login","/","/auth/addNewUser","/auth/generateToken","/createProfile").permitAll()
+                        .requestMatchers("/h2-console/**","/auth/welcome","/login","/","/auth/addNewUser","/auth/generateToken","/createProfile").permitAll()
                         //requestMatchers() can accept html pages if they are present in static folder but not when they are in templates folder
-                        .requestMatchers("/auth/user/**").hasRole("USER")
+                        .requestMatchers("/products/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

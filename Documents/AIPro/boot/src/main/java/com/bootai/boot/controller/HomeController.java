@@ -23,4 +23,10 @@ public class HomeController {
     {
         return "login";
     }
+
+    @GetMapping("/product")
+    public String productsPage()
+    {
+        return "productsPage";
+    }
 }

@@ -36,6 +36,7 @@ public class UserInfoService implements UserDetailsService{
     }
     public UserInfo addNewUser(UserInfo userInfo)
     {
+        System.out.println("storing user--encoding password");
         userInfo.setPassword(encoder.encode(userInfo.getPassword()));//encoding password before saving it
         return userRepository.save(userInfo);
     }

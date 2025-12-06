@@ -1,12 +1,14 @@
 package com.bootai.boot.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+//import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+//import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,9 +24,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserController {
     
-
+    @Autowired
     private UserInfoService service;
+    @Autowired
     private JwtService jwtService;
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     @GetMapping("/welcome")
@@ -34,14 +38,14 @@ public class UserController {
     }
 
     @PostMapping("/addNewUser")
-    public UserInfo addNewUser(@RequestBody UserInfo userInfo)
+    public UserInfo addNewUser(UserInfo userInfo)
     {
         System.out.println("In User Controller -- addNewUser()");
         return service.addNewUser(userInfo);
     }
 
     @PostMapping("/generateToken")
-    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest)
+    public String authenticateAndGetToken(AuthRequest authRequest)
     {
         System.out.println("In User Controller -- authenticateAndGetToken()");
         Authentication authentication=authenticationManager.authenticate(
@@ -51,6 +55,7 @@ public class UserController {
         if(authentication.isAuthenticated())
         {
             return jwtService.generateToken(authRequest.getUsername());
+              //"productsPage";
         }
         else
         {
